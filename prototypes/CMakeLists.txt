@@ -1,7 +1,0 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-
-ADD_EXECUTABLE(protype1
-	exec.cpp
-	execDEMO.hpp
-)
-
