@@ -83,7 +83,7 @@ int main()
 
     std::string input;
     cout << "Input user commands seperated by &&, ||, or ;" << endl;
-    cin >> input;
+    getline(cin, input);
 
     Parser *ParseGod = new Parser(input);
     connectorList = ParseGod->getConnectorList();
