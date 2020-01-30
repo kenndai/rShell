@@ -8,7 +8,7 @@ This program is a simplistic shell, or terminal-like, program that takes in comm
 For example, <code>$ ls -a; echo hello && mkdir test || echo world; git status</code> will display all files including hidden ones, print out ‘hello’, and make a new directory named ‘test’, but will not print out ‘world’ or execute <code>git status</code>.<br/><br/>
 In order to complete these tasks, the program most first parse the user input line into separate commands and create the necessary classes in order to complete this task. Finally, with the help of <code>fork(), waitpid(), and execvp()</code> the program will then apply an algorithm to figure out which commands to actually execute.<br/><br/>
 ## Diagram
-![OMT Diagram](/images/UMT Diagram.png)
+![OMT Diagram](images/UMT%20Diagram.png)
 ## Classes
  - **rShell:** This is the class which contains the main function. It’s the only class that strings together and communicates to all of the other classes.
  - **Parser:** This class parses the user’s input string into multiple token objects.
