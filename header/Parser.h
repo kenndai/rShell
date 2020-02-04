@@ -117,7 +117,7 @@ void Parser::parseString(std::string &str) {
     } else {    // "NONE" was found, this is the end of the string
 
         trimWhiteSpaces(str);
-        this->tokenList.push_back(makeToken(cmd));
+        this->tokenList.push_back(makeToken(str));
         this->connectorList.push_back(connector);
 
         str.erase(0, str.length());   //make the string empty
