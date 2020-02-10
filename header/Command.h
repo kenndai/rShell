@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 class Command {
 
@@ -46,6 +47,8 @@ bool Command::run() {
     }
 		
     if (cPid == 0) { //child process does the executing
+	if (execvp(args[0], args == -1) //checks for valid command to execute, exit status is 1 if nonvalid command passed in
+		exit(EXIT_FAILURE);
 	execvp(args[0], args);	
     }
     else if (cPid > 0) {
@@ -54,8 +57,6 @@ bool Command::run() {
 	   int exitStatus = WEXITSTATUS(status);
 	   std::cout << "Child process exit status: " << exitStatus << std::endl;
 	   if (exitStatus == 0) { //if command was EXECUTED successfully
-		/*if a nonexecutable is at args[0] and execvp is called on it, exit status is still 0*/
-		/* may need to check that a valid executable is passed in*/ 
 		executed = true;	 
 	   }
 	}
