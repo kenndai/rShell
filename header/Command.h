@@ -39,29 +39,33 @@ bool Command::run() {
     pid_t cPid = fork(); //forks the process
 
     std::cout << info[0] << " " << info[1] << std::endl;    //just for testing purposes to see which commands were called
-
+   
+    if (info[0] == "exit") {
+	exit = true;
+	return executed;
+    }
+		
     if (cPid == 0) { //child process does the executing
-	execvp(args[0], args);	//executes the command
+	execvp(args[0], args);	
     }
     else if (cPid > 0) {
- 	waitpid(cPid, &status, 0); //if parent wait for child to terminate	
+ 	waitpid(cPid, &status, 0); //wait for child to terminate	
 	if (WIFEXITED(status)) { //if process TERMINATES successfully
 	   int exitStatus = WEXITSTATUS(status);
 	   std::cout << "Child process exit status: " << exitStatus << std::endl;
 	   if (exitStatus == 0) { //if command was EXECUTED successfully
 		/*if a nonexecutable is at args[0] and execvp is called on it, exit status is still 0*/
+		/* may need to check that a valid executable is passed in*/ 
 		executed = true;	 
 	   }
 	}
     }
     else {
 	std::cout << "fork() failed" << std::endl;
-	exit = 1; //if exit command was called set exit variable to true
-	_exit(1); //exit when fork fails	
+	//exit = 1; //if exit command was called set exit variable to true
     }
     // return true; /*original*/
-    //return true if the COMMAND was run successfully
-    return executed;   
+    return executed; //return true if the COMMAND was run successfully
 }
 
 bool Command::checkExit() {
