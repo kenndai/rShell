@@ -2,10 +2,11 @@
 #define TOKEN_H
 
 #include <iostream>
+#include "TrimWhiteSpace.h"
 
 using namespace std;
 
-class Token {
+class Token : public TrimWhiteSpace {
 
     public:
 
@@ -24,7 +25,6 @@ class Token {
 
         bool isValid();
         void extractInfo(std::string &str);
-        void trimWhiteSpaces(std::string &str);
 };
 
 Token::Token() {
@@ -42,8 +42,8 @@ Token::~Token() {
 
 bool Token::isValid() {
     /* find the first white space then split. Check if left side is
- *     valid command if execvp() doesnt return false value
- *         or just send the left side to execvp() to see if it works */
+    valid command if execvp() doesnt return false value
+    or just send the left side to execvp() to see if it works */
     return true;
 }
 
@@ -56,9 +56,13 @@ void Token::extractInfo(std::string &str) {
 
     if ( (tempPos = str.find(space)) != std::string::npos )
         pos = tempPos;
+    else if ( (str.length() != 0) && (str.find(space) == std::string::npos) )
+        pos = str.length();
     fileName = str.substr(0, pos);
     argList = str.substr(pos, str.length());
-    trimWhiteSpaces(argList);
+
+    TrimWhiteSpace *trim = new TrimWhiteSpace();
+    trim->trimBothWhiteSpaces(argList);
 
     this->info[0] = fileName;
     this->info[1] = argList;
@@ -71,15 +75,6 @@ std::string& Token::getString() {
 
 std::string* Token::getInfo() {
     return this->info;
-}
-
-void Token::trimWhiteSpaces(std::string &str) {
-    /* trim left side */
-    str.erase(str.begin(), std::find_if(str.begin(), str.end(),
-              std::not1(std::ptr_fun<int, int>(std::isspace))));
-    /* trim right side */
-    str.erase(std::find_if(str.rbegin(), str.rend(),
-              std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
 }
 
 Token Token::operator=(const Token &other) {

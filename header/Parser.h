@@ -4,10 +4,11 @@
 #include <iostream>
 #include <vector>
 #include "Token.h"
+#include "TrimWhiteSpace.h"
 
 using namespace std;
 
-class Parser {
+class Parser : public TrimWhiteSpace {
 
 public:
 
@@ -24,9 +25,6 @@ private:
 
     Token* makeToken(std::string &cmd);
     void parseString(std::string &str);
-    void trimLeftWhiteSpaces(std::string &str);
-    void trimRightWhiteSpaces(std::string &str);
-    void trimWhiteSpaces(std::string &str);
     void cleanParser();
 
 };
@@ -36,7 +34,7 @@ Parser::Parser() {
 }
 
 Parser::~Parser() {
-    
+
 }
 
 void Parser::setParser(std::string &str) {
@@ -57,8 +55,9 @@ void Parser::parseString(std::string &str) {
     std::string connector;
     size_t pos = std::string::npos;
     size_t tempPos;
+    TrimWhiteSpace *trim = new TrimWhiteSpace();
 
-/* >>>>>>>>>>>>>>>>>>>>> Find which connector comes next <<<<<<<<<<<<<<<<<<<<<<<<*/
+    /* >>>>>>>>>>>>>>>>>>>>> Find which connector comes next <<<<<<<<<<<<<<<<<<<<<<<<*/
 
     if ( (tempPos = str.find(AND)) != std::string::npos ) { //find the first &&
         connector = "AND";              //set which connector was last found
@@ -85,7 +84,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);   //grab the portion of str we want
         str.erase(0, cmd.length()); //delete that portion from the original string
 
-        trimWhiteSpaces(cmd);
+        trim->trimBothWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -96,7 +95,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);
         str.erase(0, cmd.length());
 
-        trimWhiteSpaces(cmd);
+        trim->trimBothWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -107,7 +106,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);
         str.erase(0, cmd.length());
 
-        trimWhiteSpaces(cmd);
+        trim->trimBothWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -116,7 +115,7 @@ void Parser::parseString(std::string &str) {
 
     } else {    // "NONE" was found, this is the end of the string
 
-        trimWhiteSpaces(str);
+        trim->trimBothWhiteSpaces(str);
         this->tokenList.push_back(makeToken(str));
         this->connectorList.push_back(connector);
 
@@ -128,21 +127,6 @@ void Parser::parseString(std::string &str) {
 Token* Parser::makeToken(std::string &cmd) {
     Token *t = new Token(cmd);
     return t;
-}
-
-void Parser::trimLeftWhiteSpaces(std::string &str) {
-    str.erase(str.begin(), std::find_if(str.begin(), str.end(),
-              std::not1(std::ptr_fun<int, int>(std::isspace))));
-}
-
-void Parser::trimRightWhiteSpaces(std::string &str) {
-    str.erase(std::find_if(str.rbegin(), str.rend(),
-              std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
-}
-
-void Parser::trimWhiteSpaces(std::string &str) {
-    trimLeftWhiteSpaces(str);
-    trimRightWhiteSpaces(str);
 }
 
 std::vector<std::string>& Parser::getConnectorList() {

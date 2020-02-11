@@ -18,8 +18,8 @@ class Command {
         bool checkExit();
 
     private:
-	bool executed = false;
-        bool exit = false;
+       bool executed = false;
+        bool exitCalled = false;
         std::string info[2];
 };
 
@@ -39,38 +39,41 @@ bool Command::run() {
 
     pid_t cPid = fork(); //forks the process
 
-    std::cout << info[0] << " " << info[1] << std::endl;    //just for testing purposes to see which commands were called
-   
-    if (info[0] == "exit") {
-	exit = true;
-	return executed;
-    }
-		
     if (cPid == 0) { //child process does the executing
-	if (execvp(args[0], args == -1) //checks for valid command to execute, exit status is 1 if nonvalid command passed in
-		exit(EXIT_FAILURE);
-	execvp(args[0], args);	
+
+        if ( (info[0] == "exit()") || (execvp(args[0], args) == -1) ) //checks for valid command to execute, exit status is 1 if nonvalid command passed in
+            exit(1); //exit() sets the status to 1 for parent fork
+        else
+            exit(0);    //execvp() successfully ran
+
+    } else if (cPid > 0) {  //parent process
+
+        if (info[0] == "exit()")
+            exit(0); //terminate
+
+        waitpid(cPid, &status, 0); //wait for child to terminate
+
+        if (WIFEXITED(status)) { //if process TERMINATES successfully
+           int exitStatus = WEXITSTATUS(status);
+           //std::cout << "Child process exit status: " << exitStatus << std::endl;
+
+           if (exitStatus == 0) { //if command was EXECUTED successfully
+                return true;
+           } else
+                return false;
+
+        } else
+            std::cout << "Child process didnt terminate successfully" << std::endl;
     }
-    else if (cPid > 0) {
- 	waitpid(cPid, &status, 0); //wait for child to terminate	
-	if (WIFEXITED(status)) { //if process TERMINATES successfully
-	   int exitStatus = WEXITSTATUS(status);
-	   std::cout << "Child process exit status: " << exitStatus << std::endl;
-	   if (exitStatus == 0) { //if command was EXECUTED successfully
-		executed = true;	 
-	   }
-	}
-    }
-    else {
-	std::cout << "fork() failed" << std::endl;
-	//exit = 1; //if exit command was called set exit variable to true
-    }
-    // return true; /*original*/
-    return executed; //return true if the COMMAND was run successfully
+    else
+        std::cout << "cPid = -1, fork() failed" << std::endl; //testing purposes
+
+    return false; //return true if the COMMAND was run successfully
 }
 
 bool Command::checkExit() {
-    return this->exit;
+    return this->exitCalled;
 }
+
 
 #endif // COMMAND_H
