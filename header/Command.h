@@ -39,9 +39,12 @@ bool Command::run() {
 
     if (cPid == 0) { //child process does the executing
 
-        if ( (info[0] == "exit()") || (execvp(args[0], args) == -1) ) //checks for valid command to execute, exit status is 1 if nonvalid command passed in
+        if ( (info[0] == "exit()") || (info[0] == "") ) //if empty command or "exit()" just terminate
+            exit(0);
+        else if ( execvp(args[0], args) == -1 ) { //checks for valid command to execute, exit status is 1 if nonvalid command passed in
+            std::cout << "-bash: " << info[0] << ": command not found" << std::endl;
             exit(1); //exit() sets the status to 1 for parent fork
-        else
+        } else
             exit(0);    //execvp() successfully ran
 
     } else if (cPid > 0) {  //parent process
