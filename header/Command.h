@@ -15,11 +15,9 @@ class Command {
         Command(std::string *info);
         ~Command();
         bool run();
-        bool checkExit();
 
     private:
-       bool executed = false;
-        bool exitCalled = false;
+
         std::string info[2];
 };
 
@@ -69,10 +67,6 @@ bool Command::run() {
         std::cout << "cPid = -1, fork() failed" << std::endl; //testing purposes
 
     return false; //return true if the COMMAND was run successfully
-}
-
-bool Command::checkExit() {
-    return this->exitCalled;
 }
 
 

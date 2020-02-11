@@ -48,9 +48,7 @@ void Executer::execute(std::vector<Command*> &commandList, std::vector<std::stri
     for (unsigned int i = 0; i < commandList.size(); i++) {         //for every command...
         cmdSuccess = commandList.at(i)->run();                      //run cmd, did it succeed?
 
-        if (commandList.at(i)->checkExit())                         //was the exit command called?
-            break;
-        else if ( !cmdSuccess && (connectionList.at(i) == "AND") )  //if cmd failed + &&, terminate
+        if ( !cmdSuccess && (connectionList.at(i) == "AND") )       //if cmd failed + &&, terminate
             break;
         else if ( cmdSuccess && (connectionList.at(i) == "OR") )    //if cmd succeeded + ||, terminate
             break;

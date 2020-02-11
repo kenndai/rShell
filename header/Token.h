@@ -23,8 +23,9 @@ class Token : public TrimWhiteSpace {
         std::string cmd;
         std::string info[2];    //3 is a safe number. info shouldn't exceed 5
 
-        bool isValid();
         void extractInfo(std::string &str);
+        std::string& removeQuotations(std::string &str);
+
 };
 
 Token::Token() {
@@ -38,13 +39,6 @@ Token::Token(std::string &cmd) {
 
 Token::~Token() {
     /* nukem() */
-}
-
-bool Token::isValid() {
-    /* find the first white space then split. Check if left side is
-    valid command if execvp() doesnt return false value
-    or just send the left side to execvp() to see if it works */
-    return true;
 }
 
 void Token::extractInfo(std::string &str) {
@@ -65,8 +59,7 @@ void Token::extractInfo(std::string &str) {
     trim->trimBothWhiteSpaces(argList);
 
     this->info[0] = fileName;
-    this->info[1] = argList;
-
+    this->info[1] = removeQuotations(argList);
 }
 
 std::string& Token::getString() {
@@ -76,6 +69,12 @@ std::string& Token::getString() {
 std::string* Token::getInfo() {
     return this->info;
 }
+
+std::string& Token::removeQuotations(std::string &str) {
+    str.erase( remove( str.begin(), str.end(), '\"' ), str.end() );
+    return str;
+}
+
 
 Token Token::operator=(const Token &other) {
     if(this != &other) {

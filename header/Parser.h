@@ -26,6 +26,7 @@ private:
     Token* makeToken(std::string &cmd);
     void parseString(std::string &str);
     void cleanParser();
+    std::string& removeComment(std::string &str);
 
 };
 
@@ -56,6 +57,8 @@ void Parser::parseString(std::string &str) {
     size_t pos = std::string::npos;
     size_t tempPos;
     TrimWhiteSpace *trim = new TrimWhiteSpace();
+
+    str = removeComment(str);           //remove everything to rigth of '#'
 
     /* >>>>>>>>>>>>>>>>>>>>> Find which connector comes next <<<<<<<<<<<<<<<<<<<<<<<<*/
 
@@ -135,6 +138,13 @@ std::vector<std::string>& Parser::getConnectorList() {
 
 std::vector<Token*>& Parser::getTokenList() {
     return this->tokenList;
+}
+
+std::string& Parser::removeComment(std::string &str) {
+    //everything to right of "#" is comment
+    size_t pos = str.find("#");
+    str = str.substr(0, pos);
+    return str;
 }
 
 #endif // PARSER_H
