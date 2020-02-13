@@ -36,13 +36,13 @@ test
 
 # CMake Temp Files
 CMakeCache.txt
-CMakeFiles
+CMakeFiles/
 
 #other shit
 bin/
 rShell
 cmake_install.cmake
 CMakeCache.txt
-CMakeFiles/
 Makefile
 lib/
+
