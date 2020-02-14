@@ -1,4 +1,5 @@
-fine READ_H
+#ifndef READ_H
+#define READ_H
 
 #include <string>
 
