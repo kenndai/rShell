@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "../header/Command.h"
 
 
 Command::Command(std::string *info) {

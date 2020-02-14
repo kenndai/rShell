@@ -10,7 +10,7 @@ int main() {
 	
 	string lsExec = "ls";
 	string ls_lExec = "-l";
-	char* args[] = {(char*)lsExec.c_str(), (char*)ls_lExec.c_str(), NULL};
+	char* args[] = {(char*)lsExec.c_str(), (char*)ls_lExec.c_str()};
 	
 	int status; //set to to NULL when child terminates
 	pid_t cPid;  //pid of child
