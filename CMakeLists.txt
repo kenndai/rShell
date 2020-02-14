@@ -9,11 +9,13 @@ ADD_SUBDIRECTORY(googletest)
 
 SET(CMAKE_CXX_STANDARD 11)
 
-ADD_EXECUTABLE(rshell
-    src/rShell.cpp
+ADD_EXECUTABLE(
+	rshell
+	src/rShell.cpp
 )
 
-ADD_EXECUTABLE(test
+ADD_EXECUTABLE(
+	test
 	unit_tests/unit_test.cpp
 )
 
