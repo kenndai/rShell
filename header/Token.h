@@ -2,11 +2,12 @@
 #define TOKEN_H
 
 #include <iostream>
-#include "TrimWhiteSpace.h"
+#include <algorithm>
+#include "Read.h"
 
 using namespace std;
 
-class Token : public TrimWhiteSpace {
+class Token : public Read {
 
     public:
 
@@ -25,6 +26,7 @@ class Token : public TrimWhiteSpace {
 
         void extractInfo(std::string &str);
         std::string& removeQuotations(std::string &str);
+        virtual void trimWhiteSpaces(std::string &str);
 
 };
 
@@ -55,8 +57,7 @@ void Token::extractInfo(std::string &str) {
     fileName = str.substr(0, pos);
     argList = str.substr(pos, str.length());
 
-    TrimWhiteSpace *trim = new TrimWhiteSpace();
-    trim->trimBothWhiteSpaces(argList);
+    trimWhiteSpaces(argList);
 
     this->info[0] = fileName;
     this->info[1] = removeQuotations(argList);
@@ -84,5 +85,12 @@ Token Token::operator=(const Token &other) {
     }
     return *this;
 }
+
+void Token::trimWhiteSpaces(std::string &str) {
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+    str.erase(std::find_if(str.rbegin(), str.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
+}
+
+
 
 #endif // TOKEN_H

@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "Token.h"
-#include "TrimWhiteSpace.h"
+#include "Read.h"
 
 using namespace std;
 
-class Parser : public TrimWhiteSpace {
+class Parser : public Read {
 
     public:
 
@@ -27,6 +28,9 @@ class Parser : public TrimWhiteSpace {
         void parseString(std::string &str);
         void cleanParser();
         std::string& removeComment(std::string &str);
+        virtual void trimWhiteSpaces(std::string &str);
+        void trimLeftWhiteSpaces(std::string &str);
+        void trimRightWhiteSpaces(std::string &str);
 
 };
 
@@ -56,7 +60,6 @@ void Parser::parseString(std::string &str) {
     std::string connector;
     size_t pos = std::string::npos;
     size_t tempPos;
-    TrimWhiteSpace *trim = new TrimWhiteSpace();
 
     str = removeComment(str);           //remove everything to rigth of '#'
 
@@ -87,7 +90,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);   //grab the portion of str we want
         str.erase(0, cmd.length()); //delete that portion from the original string
 
-        trim->trimBothWhiteSpaces(cmd);
+        trimWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -98,7 +101,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);
         str.erase(0, cmd.length());
 
-        trim->trimBothWhiteSpaces(cmd);
+        trimWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -109,7 +112,7 @@ void Parser::parseString(std::string &str) {
         cmd = str.substr(0, pos);
         str.erase(0, cmd.length());
 
-        trim->trimBothWhiteSpaces(cmd);
+        trimWhiteSpaces(cmd);
         this->tokenList.push_back(makeToken(cmd));
         this->connectorList.push_back(connector);
 
@@ -118,7 +121,7 @@ void Parser::parseString(std::string &str) {
 
     } else {    // "NONE" was found, this is the end of the string
 
-        trim->trimBothWhiteSpaces(str);
+        trimWhiteSpaces(str);
         this->tokenList.push_back(makeToken(str));
         this->connectorList.push_back(connector);
 
@@ -145,6 +148,21 @@ std::string& Parser::removeComment(std::string &str) {
     size_t pos = str.find("#");
     str = str.substr(0, pos);
     return str;
+}
+
+void Parser::trimWhiteSpaces(std::string &str) {
+    trimLeftWhiteSpaces(str);
+    trimRightWhiteSpaces(str);
+}
+
+void Parser::trimLeftWhiteSpaces(std::string &str) {
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(),
+              std::not1(std::ptr_fun<int, int>(std::isspace))));
+}
+
+void Parser::trimRightWhiteSpaces(std::string &str) {
+    str.erase(std::find_if(str.rbegin(), str.rend(),
+              std::not1(std::ptr_fun<int, int>(std::isspace))).base(), str.end());
 }
 
 #endif // PARSER_H
