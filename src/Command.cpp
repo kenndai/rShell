@@ -1,5 +1,5 @@
 #include "../header/Command.h"
-
+#include <string>
 
 Command::Command(std::string *info) {
     this->info[0] = info[0]; //executable
@@ -13,7 +13,10 @@ Command::~Command() {
 bool Command::run() {
     //fork(), execvp(), waitpid()
     int status;
-    char* args[] = {(char*)info[0].c_str(), (char*)info[1].c_str(), NULL}; //create char* array based on string array
+    if (info[1] == std::string::npos)
+	char* args[] = {(char*)info[0].c_str(), NULL}; //create char* array based on string array
+    else
+	char* args[] = {(char*)info[0].c_str(), (char*)info[1].c_str(), NULL}; //create char* array based on string array
 
     pid_t cPid = fork(); //forks the process
 
