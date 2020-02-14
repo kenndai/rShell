@@ -6,8 +6,8 @@
 class Read {
 
     public:
-        Read() {};
-        ~Read() {};
+        Read();
+        ~Read();
 
     private:
 
