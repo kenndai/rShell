@@ -10,23 +10,23 @@ using namespace std;
 
 class Parser : public TrimWhiteSpace {
 
-public:
+    public:
 
-    Parser();
-    ~Parser();
-    void setParser(std::string &str);
-    std::vector<std::string>& getConnectorList();
-    std::vector<Token*>& getTokenList();
+        Parser();
+        ~Parser();
+        void setParser(std::string &str);
+        std::vector<std::string>& getConnectorList();
+        std::vector<Token*>& getTokenList();
 
-private:
+    private:
 
-    vector<std::string> connectorList;  //list of AND OR SEMI
-    vector<Token*> tokenList;   //list of TOKEN objects
+        vector<std::string> connectorList;  //list of AND OR SEMI
+        vector<Token*> tokenList;   //list of TOKEN objects
 
-    Token* makeToken(std::string &cmd);
-    void parseString(std::string &str);
-    void cleanParser();
-    std::string& removeComment(std::string &str);
+        Token* makeToken(std::string &cmd);
+        void parseString(std::string &str);
+        void cleanParser();
+        std::string& removeComment(std::string &str);
 
 };
 
