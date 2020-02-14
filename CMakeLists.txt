@@ -11,11 +11,6 @@ SET(CMAKE_CXX_STANDARD 11)
 
 ADD_EXECUTABLE(rShell
     src/rShell.cpp
-    header/Command.h
-    header/Executer.h
-    header/Parser.h
-    header/Token.h
-    header/TrimWhiteSpace.h
 )
 
 ADD_EXECUTABLE(test
