@@ -13,10 +13,12 @@ Command::~Command() {
 bool Command::run() {
     //fork(), execvp(), waitpid()
     int status;
-    if (info[1] == std::string::npos)
-	char* args[] = {(char*)info[0].c_str(), NULL}; //create char* array based on string array
-    else
-	char* args[] = {(char*)info[0].c_str(), (char*)info[1].c_str(), NULL}; //create char* array based on string array
+    char* args[3] = {(char*)info[0].c_str(), NULL, NULL};
+
+    if (info[1] != "") {
+        args[1] = (char*)info[1].c_str();
+        args[2] = NULL;
+    }
 
     pid_t cPid = fork(); //forks the process
 

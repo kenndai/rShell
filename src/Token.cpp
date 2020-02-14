@@ -32,8 +32,7 @@ void Token::extractInfo(std::string &str) {
 
     this->info[0] = fileName;
     this->info[1] = removeQuotations(argList);
-    if (this->info[1] == "")
-	this->info[1] = std::string::npos;
+    
 }
 
 std::string& Token::getString() {
