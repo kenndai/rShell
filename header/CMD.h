@@ -128,11 +128,11 @@ std::string& CMD::removeQuotations(std::string &str) {
 
 bool CMD::execute() {
     int status;
-    char* args[3] = {(char*)info[0].c_str(), NULL, NULL};
 
-    if (info[1] != "") {
-        args[1] = (char*)info[1].c_str();
-        args[2] = NULL;
+    char* args[3] = {NULL, NULL, NULL};
+    for (unsigned int i = 0; i < 3; i++) {
+        if (info[i] != "")   //if info[i] isn't empty string then assign it to args[i]
+            args[i] = (char*)info[i].c_str();
     }
 
     pid_t cPid = fork(); //forks the process
