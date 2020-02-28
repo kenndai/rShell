@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <errno.h>
 
 class CMD : public Token{
@@ -39,6 +40,7 @@ class CMD : public Token{
         std::string& removeQuotations(std::string &str);
         std::string& removeBrackets(std::string &str);
         void convertToTestCmd();
+	bool runTest();
 
 };
 
@@ -122,6 +124,8 @@ std::string& CMD::removeQuotations(std::string &str) {
 
 bool CMD::execute() {
     int status;
+    bool testStatus; //did runTest return true or false
+
     char* args[3] = {(char*)info[0].c_str(), NULL, NULL};
 
     if (info[1] != "") {
@@ -135,6 +139,17 @@ bool CMD::execute() {
 
         if ( (info[0] == "exit") || (info[0] == "") ) //if empty command or "exit()" just terminate
             exit(0);
+	else if ( info[0] == "test" ) {
+	    testStatus = runTest();
+	    if (testStatus) { //if path exists
+		std::cout << "(True)" << std::endl;
+		exit(0);
+	    }
+	    else {
+		std::cout << "(False)" << std::endl;
+		exit(1);
+	    }
+	}
         else if ( execvp(args[0], args) == -1 ) { //checks for valid command to execute, exit status is 1 if nonvalid command passed in
             std::cout << "-bash: " << info[0] << ": command not found" << std::endl;
             exit(1); //exit() sets the status to 1 for parent fork
@@ -164,6 +179,25 @@ bool CMD::execute() {
         std::cout << "cPid = -1, fork() failed" << std::endl; //testing purposes
 
     return false; //return true if the COMMAND was run successfully
+}
+
+bool CMD::runTest() {
+	struct stat buffer;
+	mode_t fileMode;
+
+	stat((char*)info[2].c_str(), &buffer); //pass in path, store info in buffer
+	fileMode = buffer.st_mode; //returns mode_t of buffer
+
+	if ( info[1] != "-e" || info[1] != "-f" || info[1] != "-d" ) {
+		std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
+		return false;
+	}
+	else {
+		if ( S_ISREG(fileMode) || S_ISDIR(fileMode) ) //checks fileMode for reg or dir
+			return true;
+		else
+			return false;
+	}
 }
 
 std::string CMD::tokenType() {
