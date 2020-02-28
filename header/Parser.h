@@ -9,8 +9,8 @@
 #include "AND.h"
 #include "OR.h"
 #include "SEMI.h"
-#include "Parentheses.h"
-#include "Command.h"
+#include "PAREN.h"
+#include "CMD.h"
 
 class Parser {
 
@@ -146,9 +146,9 @@ size_t Parser::findCommandLength(const std::string &str) {
 Token* Parser::makeToken(std::string type) {
 // (, ), ;, &&, ||, cmd
     if (type == "(")
-        this->tokenList.push_back(new Parentheses("("));
+        this->tokenList.push_back(new PAREN("("));
     else if (type == ")")
-        this->tokenList.push_back(new Parentheses(")"));
+        this->tokenList.push_back(new PAREN(")"));
     else if (type == "||")
         this->tokenList.push_back(new OR());
     else if (type == "&&")
@@ -156,7 +156,11 @@ Token* Parser::makeToken(std::string type) {
     else if (type == ";")
         this->tokenList.push_back(new SEMI());
     else      //it's a command
-        this->tokenList.push_back(new Command(type));
+        this->tokenList.push_back(new CMD(type));
+}
+
+std::vector<Token*>& Parser::getTokenList() {
+    return this->tokenList;
 }
 
 
