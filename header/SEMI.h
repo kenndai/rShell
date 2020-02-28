@@ -19,9 +19,8 @@ class SEMI : public Token{
 
     private:
 
-        std::string val = ";";
+        std::string val = "SEMI";
         Token* leftToken;
-        Token* parentToken;
 
 };
 
