@@ -10,9 +10,11 @@ class AND : public Token{
 
         AND();
         ~AND();
-        void assignLeftChild(Token* t);
-        void assignRightChild(Token* t);
 
+        virtual void assignLeftChild(Token* t);
+        virtual void assignRightChild(Token* t);
+        virtual Token* getLeftChild();
+        virtual Token* getRightChild();
         virtual bool execute();
         virtual std::string tokenType();
 
@@ -32,8 +34,20 @@ AND::~AND() {
     /* nukem() */
 }
 
+Token* AND::getLeftChild() {
+    return this->leftToken;
+}
+
+Token* AND::getRightChild() {
+    return this->rightToken;
+}
+
 void AND::assignRightChild(Token* t) {
     this->rightToken = t;
+}
+
+void AND::assignLeftChild(Token* t) {
+    this->leftToken = t;
 }
 
 bool AND::execute() {
