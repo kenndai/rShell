@@ -82,7 +82,6 @@ void Executer::shunting() {
     std::vector<Token*> vect;
 
     for (unsigned int i = 0; i < tokenList.size(); i++) {
-        std::cout << "test: " << tokenList.at(i)->tokenType() << std::endl;
         //check if bracket
         if (tokenList.at(i)->tokenType() == ")") {   //if end bracket then pop from queue until "(" hit
             while (true) {  //keep popping queue until "(" hit

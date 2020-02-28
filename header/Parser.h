@@ -58,7 +58,6 @@ void Parser::parseString(std::string &str) {
     std::string OPEN_PAREN = "(";
     std::string CLOSE_PAREN = ")";
     size_t pos;
-    //size_t tempPos;
 
     trimmer->trimLeftWhiteSpaces(str);
 
