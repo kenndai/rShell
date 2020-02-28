@@ -185,7 +185,7 @@ bool CMD::runTest() {
 	struct stat buffer;
 	mode_t fileMode;
 
-	stat(info[2], &buffer); //pass in path, store info in buffer
+	stat((char*)info[2].c_str(), &buffer); //pass in path, store info in buffer
 	fileMode = buffer.st_mode; //returns mode_t of buffer
 
 	if ( info[1] != "-e" || info[1] != "-f" || info[1] != "-d" ) {
