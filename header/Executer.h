@@ -112,7 +112,7 @@ void Executer::makeTree() {
         }
     }
 
-    for (unsigned int i = 0; i < tokenList.size(); i++) {
+    /*for (unsigned int i = 0; i < tokenList.size(); i++) {
         std::cout << "Token: " + tokenList.at(i)->tokenType() << std::endl;
         if (tokenList.at(i)->getLeftChild() == nullptr)
             std::cout << "LeftChild: " << "NULL" << std::endl;
@@ -123,7 +123,7 @@ void Executer::makeTree() {
             std::cout << "RightChild: " << "NULL" << std::endl;
         else
             std::cout << "RightChild: " + tokenList.at(i)->getRightChild()->tokenType() << std::endl;
-    }
+    }*/
 }
 
 void Executer::makeTreeRecursiveHelper(unsigned int &i, Token* currentNode) {
