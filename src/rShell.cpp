@@ -3,6 +3,8 @@
 #include "../header/Executer.h"
 #include "../header/Parser.h"
 
+using namespace std;
+
 int main()
 {
     std::vector<std::string> connectorList;
@@ -20,8 +22,8 @@ int main()
 
         Parser_obj->setParser(input);   //pass input to parser object
         tokenList = Parser_obj->getTokenList();
-        connectorList = Parser_obj->getConnectorList();
-        Executer_obj->setExecuter( tokenList, connectorList );  //pass tokenList and ParserList to Executer
+        //connectorList = Parser_obj->getConnectorList();
+        //Executer_obj->setExecuter( tokenList, connectorList );  //pass tokenList and ParserList to Executer
 
     }
 

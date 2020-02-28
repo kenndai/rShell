@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include "Token.h"
-#include "Command.h"
 
 class Executer {
 
@@ -12,14 +11,19 @@ class Executer {
 
         Executer();
         ~Executer();
-        void setExecuter(std::vector<Token*> &tokenList, std::vector<std::string> &connectionList);
 
     private:
 
-        Command* makeCommand(std::string *info);
-        void execute(std::vector<Command*> &commandList, std::vector<std::string> &connectionList);
 
 };
+
+Executer::Executer() {
+    //initialize class variables
+}
+
+Executer::~Executer() {
+    //nukem()
+}
 
 
 #endif // EXECUTER_H
