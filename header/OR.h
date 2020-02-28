@@ -10,9 +10,11 @@ class OR : public Token{
 
         OR();
         ~OR();
-        void assignLeftChild(Token* t);
-        void assignRightChild(Token* t);
 
+        virtual void assignLeftChild(Token* t);
+        virtual void assignRightChild(Token* t);
+        virtual Token* getLeftChild();
+        virtual Token* getRightChild();
         virtual bool execute();
         virtual std::string tokenType();
 
@@ -29,6 +31,14 @@ OR::OR() {
 
 OR::~OR() {
     /* nukem() */
+}
+
+Token* OR::getLeftChild() {
+    return this->leftToken;
+}
+
+Token* OR::getRightChild() {
+    return this->rightToken;
 }
 
 void OR::assignLeftChild(Token* t) {

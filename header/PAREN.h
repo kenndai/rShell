@@ -13,6 +13,10 @@ class PAREN : public Token{
 
         virtual bool execute();
         virtual std::string tokenType();
+        virtual void assignLeftChild(Token* t);
+        virtual void assignRightChild(Token* t);
+        virtual Token* getLeftChild();
+        virtual Token* getRightChild();
 
     private:
 
@@ -26,6 +30,22 @@ PAREN::PAREN(std::string bracket) {
 
 PAREN::~PAREN() {
     /* nukem() */
+}
+
+void PAREN::assignLeftChild(Token* t) {
+
+}
+
+void PAREN::assignRightChild(Token* t) {
+
+}
+
+Token* PAREN::getLeftChild() {
+    return nullptr;
+}
+
+Token* PAREN::getRightChild() {
+    return nullptr;
 }
 
 bool PAREN::execute() {

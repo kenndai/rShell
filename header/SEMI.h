@@ -9,15 +9,19 @@ class SEMI : public Token{
 
         SEMI();
         ~SEMI();
-        void assignChild(Token* t);
 
         virtual bool execute();
         virtual std::string tokenType();
+        virtual void assignLeftChild(Token* t);
+        virtual void assignRightChild(Token* t);
+        virtual Token* getLeftChild();
+        virtual Token* getRightChild();
 
     private:
 
         std::string val = ";";
-        Token* t = t;
+        Token* leftToken;
+        Token* parentToken;
 
 };
 
@@ -29,13 +33,25 @@ SEMI::~SEMI() {
     /* nukem() */
 }
 
-void SEMI::assignChild(Token* t){
-    this->t = t;
+Token* SEMI::getLeftChild() {
+    return this->leftToken;
+}
+
+Token* SEMI::getRightChild() {
+    return nullptr;
+}
+
+void SEMI::assignLeftChild(Token* t){
+    this->leftToken = t;
+}
+
+void SEMI::assignRightChild(Token* t){
+
 }
 
 bool SEMI::execute() {
-    if (t != nullptr) {
-        t->execute();
+    if (leftToken != nullptr) {
+        leftToken->execute();
         return true;    //always return true
     } else //no child token
         throw "-bash: syntax error near unexpected token `;'";

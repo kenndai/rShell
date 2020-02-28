@@ -23,6 +23,10 @@ class CMD : public Token{
 
         virtual bool execute();
         virtual std::string tokenType();
+        virtual void assignLeftChild(Token* t);
+        virtual void assignRightChild(Token* t);
+        virtual Token* getLeftChild();
+        virtual Token* getRightChild();
 
         CMD operator=(const CMD &other);
 
@@ -47,6 +51,22 @@ CMD::CMD(std::string cmdStr) {
 
 CMD::~CMD() {
     /* nukem() */
+}
+
+void CMD::assignLeftChild(Token* t) {
+
+}
+
+void CMD::assignRightChild(Token* t) {
+
+}
+
+Token* CMD::getLeftChild() {
+    return nullptr;
+}
+
+Token* CMD::getRightChild() {
+    return nullptr;
 }
 
 void CMD::extractInfo(std::string &str) {
@@ -191,6 +211,5 @@ CMD CMD::operator=(const CMD &other) {
     }
     return *this;
 }
-
 
 #endif // COMMAND_H

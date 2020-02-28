@@ -12,6 +12,10 @@ class Token {
 
         virtual bool execute() = 0;
         virtual std::string tokenType() = 0;
+        virtual void assignLeftChild(Token* t) = 0;
+        virtual void assignRightChild(Token* t) = 0;
+        virtual Token* getLeftChild() = 0;
+        virtual Token* getRightChild() = 0;
 
 };
 
