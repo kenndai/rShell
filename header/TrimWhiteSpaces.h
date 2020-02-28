@@ -2,6 +2,7 @@
 #define TRIMWHITESPACES_H
 
 #include <iostream>
+#include <algorithm>
 
 class TrimWhiteSpaces {
 

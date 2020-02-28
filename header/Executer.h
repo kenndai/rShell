@@ -114,11 +114,6 @@ void Executer::makeTree() {
 
     for (unsigned int i = 0; i < tokenList.size(); i++) {
         std::cout << "Token: " + tokenList.at(i)->tokenType() << std::endl;
-        if (tokenList.at(i)->getParent() == nullptr)
-            std::cout << "Parent: " << "NULL" << std::endl;
-        else
-            std::cout << "Parent: " + tokenList.at(i)->getParent()->tokenType() << std::endl;
-
         if (tokenList.at(i)->getLeftChild() == nullptr)
             std::cout << "LeftChild: " << "NULL" << std::endl;
         else
