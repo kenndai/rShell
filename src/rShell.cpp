@@ -23,11 +23,18 @@ int main()
 
         Parser_obj->setParser(input);   //pass input to parser object
         tokenList = Parser_obj->getTokenList();
-        //Executer_obj->setExecuter( tokenList, connectorList );  //pass tokenList and ParserList to Executer
 
+        /*
         for (unsigned int i = 0; i < tokenList.size(); i++) {
-            std::cout << tokenList.at(i)->execute() << std::endl;
+            std::cout << tokenList.at(i)->tokenType() << std::endl;
         }
+        */
+
+        Executer_obj->setExecuter(tokenList);  //pass tokenList and ParserList to Executer
+
+        /*for (unsigned int i = 0; i < tokenList.size(); i++) {
+            std::cout << tokenList.at(i)->execute() << std::endl;
+        }*/
 
     }
 

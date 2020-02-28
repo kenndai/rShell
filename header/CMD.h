@@ -46,11 +46,6 @@ class CMD : public Token{
 CMD::CMD(std::string cmdStr) {
     trimmer->trimBothWhiteSpaces(cmdStr);
     extractInfo(cmdStr);
-
-    for (unsigned int i = 0; i < 3; i ++) {
-        if (info[i] != "")
-            std::cout << info[i] << std::endl;
-    }
 }
 
 CMD::~CMD() {
