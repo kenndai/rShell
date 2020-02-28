@@ -23,7 +23,9 @@ class Executer {
     private:
 
         std::vector<Token*> tokenList;
+        std::vector<unsigned int> numList;
 
+        void cleanExecuter();
         void execute();
         void mirror();
         void shunting();
@@ -42,8 +44,14 @@ Executer::~Executer() {
 }
 
 void Executer::setExecuter(std::vector<Token*> &tokenList) {
+    cleanExecuter();
     this->tokenList = tokenList;
     execute();
+}
+
+void Executer::cleanExecuter() {
+    this->tokenList.clear();
+    this->numList.clear();
 }
 
 void Executer::execute() {
@@ -74,6 +82,7 @@ void Executer::shunting() {
     std::vector<Token*> vect;
 
     for (unsigned int i = 0; i < tokenList.size(); i++) {
+        std::cout << "test: " << tokenList.at(i)->tokenType() << std::endl;
         //check if bracket
         if (tokenList.at(i)->tokenType() == ")") {   //if end bracket then pop from queue until "(" hit
             while (true) {  //keep popping queue until "(" hit
@@ -88,8 +97,8 @@ void Executer::shunting() {
             }
         } else if ( tokenList.at(i)->tokenType() == "CMD" ) //if CMD found, enqueue
             vect.push_back(tokenList.at(i));
-        else    //not ")" or "CMD" then must be "(", "SEMI", "OR", "AND"
-            stk.push(tokenList.at(i));
+        else if ( tokenList.at(i)->tokenType() != "SEMI" ) //not ")" or "CMD" or "SEMI" then must be "(", "OR", "AND"
+            stk.push(tokenList.at(i));  //push to stack
     }
 
     while (!stk.empty()) {  //at the end if stack still not empty, enqueue the rest
@@ -102,28 +111,14 @@ void Executer::shunting() {
 }
 
 void Executer::makeTree() {
-    std::vector<unsigned int> numList;  //use this list to know which tokens to execute
     for (unsigned int i = 0; i < tokenList.size();) {
         if (!tokenList.empty()) { //if not empty()
-            numList.push_back(i);   //push back 0
+            this->numList.push_back(i);   //push back 0
             Token* currentNode = tokenList.at(i); //assign first node
             i++;
             makeTreeRecursiveHelper(i, currentNode); //pass in 1 (next position), first Node
         }
     }
-
-    /*for (unsigned int i = 0; i < tokenList.size(); i++) {
-        std::cout << "Token: " + tokenList.at(i)->tokenType() << std::endl;
-        if (tokenList.at(i)->getLeftChild() == nullptr)
-            std::cout << "LeftChild: " << "NULL" << std::endl;
-        else
-            std::cout << "LeftChild: " + tokenList.at(i)->getLeftChild()->tokenType() << std::endl;
-
-        if (tokenList.at(i)->getRightChild() == nullptr)
-            std::cout << "RightChild: " << "NULL" << std::endl;
-        else
-            std::cout << "RightChild: " + tokenList.at(i)->getRightChild()->tokenType() << std::endl;
-    }*/
 }
 
 void Executer::makeTreeRecursiveHelper(unsigned int &i, Token* currentNode) {
@@ -135,18 +130,13 @@ void Executer::makeTreeRecursiveHelper(unsigned int &i, Token* currentNode) {
         currentNode->assignRightChild(tokenList.at(i));  //do the same to right child
         i++;
         makeTreeRecursiveHelper(i, currentNode->getRightChild());
-
-    } else if (currentNode->tokenType() == "SEMI") {    //semi node, only has left child
-        currentNode->assignLeftChild(tokenList.at(i));
-        i++;
-        makeTreeRecursiveHelper(i, currentNode->getLeftChild());
-
-    } //else CMD node was found, do nothing
+    }   //else CMD node was found, do nothing
 }
 
 void Executer::run() {
-    if (tokenList.size() > 0) {
-        tokenList.at(0)->execute();
+    if (numList.size() > 0) { //if list is empty
+        for (unsigned int i = 0; i < numList.size(); i++)  //for every element in numList run execute() on it
+            tokenList.at(numList.at(i))->execute();
     }
 }
 
