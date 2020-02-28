@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
 #include <errno.h>
 
 class CMD : public Token{
@@ -40,13 +39,17 @@ class CMD : public Token{
         std::string& removeQuotations(std::string &str);
         std::string& removeBrackets(std::string &str);
         void convertToTestCmd();
-	bool runTest();
 
 };
 
 CMD::CMD(std::string cmdStr) {
     trimmer->trimBothWhiteSpaces(cmdStr);
     extractInfo(cmdStr);
+
+    for (unsigned int i = 0; i < 3; i ++) {
+        if (info[i] != "")
+            std::cout << info[i] << std::endl;
+    }
 }
 
 CMD::~CMD() {
@@ -76,6 +79,7 @@ void CMD::extractInfo(std::string &str) {
 
     if (str.length() > 2)   //don't run removeBrackets on an empty string
         str = removeBrackets(str);
+    trimmer->trimBothWhiteSpaces(str); //remove white spaces after removing brackets
 
     for (unsigned int i = 0; i < 3; i++) {
         if ( (pos = str.find(space)) != std::string::npos ) {   //next space found
@@ -97,7 +101,7 @@ void CMD::extractInfo(std::string &str) {
 
         trimmer->trimLeftWhiteSpaces(str);
     }
-    if (bracketsFound)
+    if (bracketsFound && info[2] == "") //if there were only 2 elements detected
         convertToTestCmd();
 
 }
@@ -124,8 +128,6 @@ std::string& CMD::removeQuotations(std::string &str) {
 
 bool CMD::execute() {
     int status;
-    bool testStatus; //did runTest return true or false
-
     char* args[3] = {(char*)info[0].c_str(), NULL, NULL};
 
     if (info[1] != "") {
@@ -139,17 +141,6 @@ bool CMD::execute() {
 
         if ( (info[0] == "exit") || (info[0] == "") ) //if empty command or "exit()" just terminate
             exit(0);
-	else if ( info[0] == "test" ) {
-	    testStatus = runTest();
-	    if (testStatus) { //if path exists
-		std::cout << "(True)" << std::endl;
-		exit(0);
-	    }
-	    else {
-		std::cout << "(False)" << std::endl;
-		exit(1);
-	    }
-	}
         else if ( execvp(args[0], args) == -1 ) { //checks for valid command to execute, exit status is 1 if nonvalid command passed in
             std::cout << "-bash: " << info[0] << ": command not found" << std::endl;
             exit(1); //exit() sets the status to 1 for parent fork

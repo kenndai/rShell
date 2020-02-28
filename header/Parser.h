@@ -49,7 +49,6 @@ void Parser::setParser(std::string &str) {
     cleanParser();
     trimmer->trimRightWhiteSpaces(str);
     parseString(str);
-    std::cout << std::endl;
 }
 
 void Parser::parseString(std::string &str) {
@@ -86,7 +85,7 @@ void Parser::parseString(std::string &str) {
     } else if (str != "" ){ //command found
         pos = findCommandLength(str);
         makeToken(str.substr(0, pos));
-        str.erase(0, pos+1);
+        str.erase(0, pos);
         parseString(str);
     }
 
@@ -133,12 +132,6 @@ size_t Parser::findCommandLength(const std::string &str) {
     //no operator was found which means this is the end of the string
     if ( pos == std::string::npos )
         pos = str.length(); //rest of str
-
-    //don't include the operator in the pos
-    if ( (connector == AND) || (connector == OR) )
-        pos = pos - 2;
-    else if ( (connector == SEMI) || (connector == OPEN_PAREN) || (connector == CLOSE_PAREN))
-        pos--;
 
     return pos;
 
