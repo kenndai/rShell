@@ -186,17 +186,19 @@ bool CMD::runTest() {
 	mode_t fileMode;
 
 	stat((char*)info[2].c_str(), &buffer); //pass in path, store info in buffer
-	fileMode = buffer.st_mode; //returns mode_t of buffer
+	//fileMode = buffer.st_mode(); //returns mode_t of stat
 
-	if ( info[1] != "-e" || info[1] != "-f" || info[1] != "-d" ) {
-		std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
+	std::cout << info[0] << " " << info[1] << " " << info[2] << std::endl;
+
+	if ( info[1] == "-e" || info[1] == "-f" || info[1] == "-d" ) {
+	    if ( S_ISREG(buffer.st_mode) || S_ISDIR(buffer.st_mode) ) //checks fileMode for reg or dir
+		return true;
+	    else
 		return false;
 	}
-	else {
-		if ( S_ISREG(fileMode) || S_ISDIR(fileMode) ) //checks fileMode for reg or dir
-			return true;
-		else
-			return false;
+	else { 
+	    std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
+	    return false;
 	}
 }
 
