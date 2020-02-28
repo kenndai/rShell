@@ -19,7 +19,7 @@ class Parser {
         Parser();
         ~Parser();
         void setParser(std::string &str);
-        std::vector<Token*>& getTokenList();
+        std::vector<Token*> getTokenList();
 
     private:
 
@@ -49,6 +49,7 @@ void Parser::setParser(std::string &str) {
     cleanParser();
     trimmer->trimRightWhiteSpaces(str);
     parseString(str);
+    std::cout << std::endl;
 }
 
 void Parser::parseString(std::string &str) {
@@ -85,7 +86,7 @@ void Parser::parseString(std::string &str) {
     } else if (str != "" ){ //command found
         pos = findCommandLength(str);
         makeToken(str.substr(0, pos));
-        str.erase(0, pos);
+        str.erase(0, pos+1);
         parseString(str);
     }
 
@@ -159,7 +160,7 @@ Token* Parser::makeToken(std::string type) {
         this->tokenList.push_back(new CMD(type));
 }
 
-std::vector<Token*>& Parser::getTokenList() {
+std::vector<Token*> Parser::getTokenList() {
     return this->tokenList;
 }
 
