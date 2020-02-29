@@ -12,7 +12,12 @@ In order to complete these tasks, the program most first parse the user input li
 ## Classes
  - **rShell:** This is the class which contains the main function. It’s also the 'brain' of the rShell program that wires everything together and makes creates the actual program.
  - **Parser:** This class parses the user’s input string into multiple token objects.
- - **Token:** This class contains the raw string of each individual command it also seperates the string into two parts and stores it into an array: the command name and the argument list. For example, ["echo", "hello"]. 
- - **Executer:** This class receives two vectors: a vector of connectors and a vector of Tokens. This class is in charge of determining the boolean logic of which commands to execute based on the connectors given by the user. This class also creates an object for every command and calls the runCmd() when a specific Command object is determined to run.
- - **Command:** This class is in charge of executing the command when determined. It uses system calls to complete this task. It also exits the program if "exit()" is called.
+ - **Token:** This is the pure virtual class which contains the necessary components needed by each sub Token class.
+ - **Executer:** This class receives the token list which was parsed by the Parser class. It then applies certain algorithms to the tokens, such as mirror, shunting yard, mirror, and then creates tree. The executer then calls run() on the tokens.
+ - **AND:** This class is created when the parser detects the <code>&&</code> operator. It also contains a string value of "AND" which can be referenced to when trying to determine which object it is.
+ - **OR:** This class is created when the parser detects the <code>||</code> operator. It also contains a string value of "OR" which can be referenced to when trying to determine which object it is.
+ - **SEMI:** This class is created when the parser detects the <code>;</code> operator. It also contains a string value of "SEMI" which can be referenced to when trying to determine which object it is.
+ - **PAREN:** This class is created when the parser detects either<code>(</code> or <code>)</code> operator. It also contains a string value of the operator which can be referenced to when trying to determine which object it is.
+ - **CMD:** This class is created when the parser detects command such as <code>echo "hello world"</code>. It also parses the string based on the spaces and puts it into an info string array. CMD also contains the run function which uses system calls to perform the given command.
+ - **TrimWhiteSpaces:** This class is used by the Token and Parser class. It removes white spaces from either the left or right side of a string.
 <br/><br/>
