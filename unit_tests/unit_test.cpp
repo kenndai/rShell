@@ -1,10 +1,15 @@
 #include "gtest/gtest.h"
 
-#include "Command_test.cpp"
-#include "Token_test.cpp"
+//#include "Command_test.cpp"
+/*#include "Token_test.cpp"
 #include "Executer_test.cpp"
 #include "Parser_test.cpp"
-#include "../header/Read.h"
+*/
+#include "AND_test.cpp"
+#include "OR_test.cpp"
+#include "SEMI_test.cpp"
+#include "CMD_test.cpp"
+//#include "PAREN_test.cpp"
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);

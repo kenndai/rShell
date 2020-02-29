@@ -28,20 +28,10 @@ ADD_EXECUTABLE(
 
 )
 
-#ADD_EXECUTABLE(
-#	test
-#	unit_tests/unit_test.cpp
-#	src/Executer.cpp
-#	src/Parser.cpp
-#	src/Read.cpp
-#	src/Token.cpp
-#	src/Command.cpp
-#	header/Executer.h
-#	header/Parser.h
-#	header/Read.h
-#	header/Token.h
-#	header/Command.h
-#)
+ADD_EXECUTABLE(
+	test
+	unit_tests/unit_test.cpp
+)	
 
-#TARGET_LINK_LIBRARIES(test gtest)
-#TARGET_COMPILE_DEFINITIONS(test PRIVATE gtest_disable_pthreads=ON)
+TARGET_LINK_LIBRARIES(test gtest)
+TARGET_COMPILE_DEFINITIONS(test PRIVATE gtest_disable_pthreads=ON)
