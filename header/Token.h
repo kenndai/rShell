@@ -19,13 +19,5 @@ class Token {
 
 };
 
-Token::Token() {
-
-}
-
-Token::~Token() {
-    /* nukem() */
-}
-
 
 #endif // TOKEN_H

@@ -16,6 +16,12 @@ ADD_EXECUTABLE(
 	src/Executer.cpp
 	src/Parser.cpp
 	src/Token.cpp
+	src/CMD.cpp
+	src/AND.cpp
+	src/OR.cpp
+	src/SEMI.cpp
+	src/PAREN.cpp
+	src/TrimWhiteSpaces.cpp
 	header/TrimWhiteSpaces.h
 	header/Executer.h
 	header/Parser.h
@@ -31,6 +37,15 @@ ADD_EXECUTABLE(
 ADD_EXECUTABLE(
 	test
 	unit_tests/unit_test.cpp
+	src/Executer.cpp
+	src/Parser.cpp
+	src/Token.cpp
+	src/CMD.cpp
+	src/AND.cpp
+	src/OR.cpp
+	src/SEMI.cpp
+	src/PAREN.cpp
+	src/TrimWhiteSpaces.cpp
 )	
 
 TARGET_LINK_LIBRARIES(test gtest)
