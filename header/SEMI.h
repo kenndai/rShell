@@ -20,7 +20,6 @@ class SEMI : public Token{
     private:
 
         std::string val = "SEMI";
-        Token* leftToken;
 
 };
 
@@ -33,7 +32,7 @@ SEMI::~SEMI() {
 }
 
 Token* SEMI::getLeftChild() {
-    return this->leftToken;
+    return nullptr;
 }
 
 Token* SEMI::getRightChild() {
@@ -41,7 +40,7 @@ Token* SEMI::getRightChild() {
 }
 
 void SEMI::assignLeftChild(Token* t){
-    this->leftToken = t;
+
 }
 
 void SEMI::assignRightChild(Token* t){
@@ -49,11 +48,7 @@ void SEMI::assignRightChild(Token* t){
 }
 
 bool SEMI::execute() {
-    if (leftToken != nullptr) {
-        leftToken->execute();
-        return true;    //always return true
-    } else //no child token
-        throw "-bash: syntax error near unexpected token `;'";
+    //error
 }
 
 std::string SEMI::tokenType() {

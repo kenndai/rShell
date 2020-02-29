@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+
 class CMD : public Token{
 
     public:
@@ -41,7 +42,8 @@ class CMD : public Token{
         std::string& removeBrackets(std::string &str);
         void convertToTestCmd();
         void checkEcho();
-	bool runTest();
+        bool runTest();
+
 };
 
 CMD::CMD(std::string cmdStr) {
@@ -149,17 +151,17 @@ bool CMD::execute() {
 
         if ( (info[0] == "exit") || (info[0] == "") ) //if empty command or "exit()" just terminate
             exit(0);
-	else if ( info[0] == "test" ) {
-	    testStatus = runTest();
-	    if (testStatus) { //if path exists
-		std::cout << "(True)" << std::endl;
-		exit(0);
-	    }
-	    else {
-		std::cout << "(False)" << std::endl;
-		exit(1);
-	    }
-	}
+    else if ( info[0] == "test" ) {
+        testStatus = runTest();
+        if (testStatus) { //if path exists
+        std::cout << "(True)" << std::endl;
+        exit(0);
+        }
+        else {
+        std::cout << "(False)" << std::endl;
+        exit(1);
+        }
+    }
         else if ( execvp(args[0], args) == -1 ) { //checks for valid command to execute, exit status is 1 if nonvalid command passed in
             std::cout << "-bash: " << info[0] << ": command not found" << std::endl;
             exit(1); //exit() sets the status to 1 for parent fork
@@ -201,18 +203,18 @@ bool CMD::runTest() {
     bool isDir = false;
 
     if ( info[1] == "-e" || info[1] == "-f" || info[1] == "-d" ) {
-	isReg = S_ISREG(fileMode);
-	isDir = S_ISDIR(fileMode);
-	if (info[1] == "-e") 
-	    return (isReg || isDir);
-	else if (info[1] == "-f")
-	    return isReg;
-	else
-	    return isDir;	    
-    }	
+    isReg = S_ISREG(fileMode);
+    isDir = S_ISDIR(fileMode);
+    if (info[1] == "-e")
+        return (isReg || isDir);
+    else if (info[1] == "-f")
+        return isReg;
+    else
+        return isDir;
+    }
     else {
-	std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
-	return false;
+    std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
+    return false;
     }
 
 }
