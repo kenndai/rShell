@@ -19,4 +19,5 @@ In order to complete these tasks, the program most first parse the user input li
  - **SEMI:** This class is created when the parser detects the <code>;</code> operator. It also contains a string value of "SEMI" which can be referenced to when trying to determine which object it is.
  - **PAREN:** This class is created when the parser detects either<code>(</code> or <code>)</code> operator. It also contains a string value of the operator which can be referenced to when trying to determine which object it is.
  - **CMD:** This class is created when the parser detects command such as <code>echo "hello world"</code>. It also parses the string based on the spaces and puts it into an info string array. CMD also contains the run function which uses system calls to perform the given command.
+ - **TrimWhiteSpaces:** This class is used by the Token and Parser class. It removes white spaces from either the left or right side of a string.
 <br/><br/>
