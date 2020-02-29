@@ -1,6 +1,6 @@
 #!/bin/sh
 
-INPUTS=("echo first" "ls -a" "echo third")
+INPUTS=("(echo hello && echas world) || echo bye" "echo hello world || (echo goodbye || echo world)")
 
 for input in "${INPUTS[@]}"
 do

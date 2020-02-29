@@ -1,14 +1,9 @@
 #!/bin/sh
 
-INPUTS=("echo first" "echo second" "echo third")
-for input in "{INPUTS[@]}"
+INPUTS=("echo first" "echo second" "echo third" "git status" "ls")
+
+for input in "${INPUTS[@]}"
 do
-	echo ".././rshell ${input}"
-	output=$(.././rshell ${input})
-	if [  "${output}" = "${input}" ]
-	then
-		echo "Test passed"
-	else
-		echo "Test failed"
-	fi
+        echo "executing .././rshell ${input}"
+        .././rshell ${input}
 done
