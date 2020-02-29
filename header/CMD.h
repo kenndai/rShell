@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/stat.h>
 #include <errno.h>
 
 class CMD : public Token{
@@ -40,12 +39,14 @@ class CMD : public Token{
         std::string& removeQuotations(std::string &str);
         std::string& removeBrackets(std::string &str);
         void convertToTestCmd();
-	bool runTest();
+        void checkEcho();
+
 };
 
 CMD::CMD(std::string cmdStr) {
     trimmer->trimBothWhiteSpaces(cmdStr);
     extractInfo(cmdStr);
+    checkEcho();
 }
 
 CMD::~CMD() {
@@ -68,6 +69,13 @@ Token* CMD::getRightChild() {
     return nullptr;
 }
 
+void CMD::checkEcho() {
+    if ( (info[0] == "echo") && (info[2] != "") ) { //if echo command and info[] contains 3 parts, "echo" "hello" "world", combine to "echo" "hello world"
+         info[1] = info[1] + " " + info[2];
+         info[2] = "";
+    }
+}
+
 void CMD::extractInfo(std::string &str) {
     std::string space = " ";
     std::string tempArg;
@@ -78,7 +86,10 @@ void CMD::extractInfo(std::string &str) {
     trimmer->trimBothWhiteSpaces(str); //remove white spaces after removing brackets
 
     for (unsigned int i = 0; i < 3; i++) {
-        if ( (pos = str.find(space)) != std::string::npos ) {   //next space found
+        if ( i == 2 ) {
+            tempArg = str;
+            str = "";
+        } else if ( (pos = str.find(space)) != std::string::npos ) {   //next space found
             tempArg = str.substr(0, pos);
             str.erase(0, pos);
         } else if ( (str.length() != 0) && (str.find(space) == std::string::npos) ) { //no spaces left but still need to append rest of string
@@ -88,12 +99,11 @@ void CMD::extractInfo(std::string &str) {
             tempArg = "";
         }
 
-        if (tempArg != "") { //if string isn't empty
-            if (i == 1) //if second argument
-                info[i] = removeQuotations(tempArg);
-            else
-                info[i] = tempArg;
+        if ( (str != "") && (i == 0) ) {    //after removing echo, remove quotes
+            str = removeQuotations(str);
         }
+
+        info[i] = tempArg;
 
         trimmer->trimLeftWhiteSpaces(str);
     }
@@ -124,7 +134,6 @@ std::string& CMD::removeQuotations(std::string &str) {
 
 bool CMD::execute() {
     int status;
-    bool testStatus;
 
     char* args[3] = {NULL, NULL, NULL};
     for (unsigned int i = 0; i < 3; i++) {
@@ -138,17 +147,6 @@ bool CMD::execute() {
 
         if ( (info[0] == "exit") || (info[0] == "") ) //if empty command or "exit()" just terminate
             exit(0);
-	else if ( info[0] == "test" ) {
-	    testStatus = runTest();
-	    if (testStatus) { //if path exists
-		std::cout << "(True)" << std::endl;
-		exit(0);
-	    }
-	    else {
-		std::cout << "(False)" << std::endl;
-		exit(1);
-	    }
-	}
         else if ( execvp(args[0], args) == -1 ) { //checks for valid command to execute, exit status is 1 if nonvalid command passed in
             std::cout << "-bash: " << info[0] << ": command not found" << std::endl;
             exit(1); //exit() sets the status to 1 for parent fork
@@ -178,34 +176,6 @@ bool CMD::execute() {
         std::cout << "cPid = -1, fork() failed" << std::endl; //testing purposes
 
     return false; //return true if the COMMAND was run successfully
-}
-
-bool CMD::runTest() {
-	struct stat buffer;
-	mode_t fileMode;
-
-	stat((char*)info[2].c_str(), &buffer); //pass in path, store info in buffer
-	fileMode = buffer.st_mode; //returns mode_t of stat
-	bool isReg = false;
-	bool isDir = false;
-
-	std::cout << info[0] << " " << info[1] << " " << info[2] << std::endl;
-
-	if ( info[1] == "-e" || info[1] == "-f" || info[1] == "-d" ) {
-	    isReg = S_ISREG(fileMode);
-	    isDir = S_ISDIR(fileMode);
-	    if (info[1] == "-e") {
-		return (isReg || isDir);
-	    }
-	    else if (info[1] == "-f")
-		return isReg;
-	    else
-		return isDir;
-	}
-	else { 
-	    std::cout << "-bash: test: " << info[1] << ": unary operator expected" << std::endl;
-	    return false;
-	}
 }
 
 std::string CMD::tokenType() {
