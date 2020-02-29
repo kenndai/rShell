@@ -14,8 +14,16 @@ void Parser::cleanParser() {
 
 void Parser::setParser(std::string &str) {
     cleanParser();
-    trimmer->trimRightWhiteSpaces(str);
+    trimmer->trimRightWhiteSpaces(removeComment(str));
     parseString(str);
+}
+
+std::string& Parser::removeComment(std::string &str) {
+    //everything to right of "#" is comment
+    size_t pos = str.find("#");
+    if (pos != std::string::npos)
+        str = str.substr(0, pos);
+    return str;
 }
 
 void Parser::parseString(std::string &str) {
@@ -122,3 +130,4 @@ Token* Parser::makeToken(std::string type) {
 std::vector<Token*> Parser::getTokenList() {
     return this->tokenList;
 }
+

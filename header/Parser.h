@@ -30,6 +30,7 @@ class Parser {
         void cleanParser();
         void parseString(std::string &str);
         size_t findCommandLength(const std::string &str);
+        std::string& removeComment(std::string &str);
 
 };
 
