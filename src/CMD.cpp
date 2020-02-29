@@ -56,8 +56,12 @@ void CMD::extractInfo(std::string &str) {
             tempArg = "";
         }
 
-        if ( (str != "") && (i == 0) ) {    //after removing echo, remove quotes
+        trimmer->trimLeftWhiteSpaces(str);
+        if ( !str.empty() && (str.at(0) == '\"') && (i == 0) && (str.at(str.length()-1) == '\"') ) {    //after removing echo, remove quotes
             str = removeQuotations(str);
+            info[0] = tempArg;
+            info[1] = str;
+            break;
         }
 
         info[i] = tempArg;
