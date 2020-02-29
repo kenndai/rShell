@@ -16,7 +16,7 @@ In order to complete these tasks, the program most first parse the user input li
  - **Executer:** This class receives the token list which was parsed by the Parser class. It then applies certain algorithms to the tokens, such as mirror, shunting yard, mirror, and then creates tree. The executer then calls run() on the tokens.
  - **AND:** This class is created when the parser detects the <code>&&</code> operator. It also contains a string value of "AND" which can be referenced to when trying to determine which object it is.
  - **OR:** This class is created when the parser detects the <code>||</code> operator. It also contains a string value of "OR" which can be referenced to when trying to determine which object it is.
- - **SEMI:** This class is created when the parser detects the <code>;<code> operator. It also contains a string value of "SEMI" which can be referenced to when trying to determine which object it is.
+ - **SEMI:** This class is created when the parser detects the <code>;</code> operator. It also contains a string value of "SEMI" which can be referenced to when trying to determine which object it is.
  - **PAREN:** This class is created when the parser detects either<code>(</code> or <code>)</code> operator. It also contains a string value of the operator which can be referenced to when trying to determine which object it is.
  - **CMD:** This class is created when the parser detects command such as <code>echo "hello world"</code>. It also parses the string based on the spaces and puts it into an info string array. CMD also contains the run function which uses system calls to perform the given command.
 <br/><br/>
